@@ -1,10 +1,7 @@
 (ns little-schemer.toys-test
   (:require [clojure.test :refer :all]
-            [little-schemer.toys :refer :all]))
-
-(defmacro is-eq
-  [assert1 assert2]
-  `(is (= ~assert1 ~assert2)))
+            [little-schemer.toys :refer :all]
+            [little-schemer.test-util :refer [is-eq]]))
 
 (deftest car-test
   (testing "car works correctly"
