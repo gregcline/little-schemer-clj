@@ -1,21 +1,47 @@
 (ns little-schemer.cons-the-mag
   (:require [little-schemer.toys :refer :all]))
 
+; (defn rember
+;   "Removes the first instance of `atom` from the `lat`"
+;   [atom lat]
+;   (cond
+;     (null? lat)
+;     '()
+;     (eq? (car lat) atom)
+;     (cdr lat)
+;     :else
+;     (cons (car lat) (rember atom (cdr lat)))))
+
 (defn rember
   "Removes the first instance of `atom` from the `lat`"
   [atom lat]
-  (cond
-    (null? lat) '()
-    (eq? atom (car lat)) (cdr lat)
-    :else (cons (car lat) (rember atom (cdr lat)))))
+  (loop [lat lat acc '()]
+    (cond
+      (null? lat)
+      (reverse acc)
+      (eq? (car lat) atom)
+      (concat (reverse acc) (cdr lat))
+      :else
+      (recur (cdr lat) (cons (car lat) acc)))))
+
+; (defn firsts
+;   "Takes the first element of each sublist in a list"
+;   [l]
+;   (cond
+;     (null? l) '()
+;     :else (cons (car (car l))
+;                 (firsts (cdr l)))))
 
 (defn firsts
   "Takes the first element of each sublist in a list"
   [l]
-  (cond
-    (null? l) '()
-    :else (cons (car (car l))
-                (firsts (cdr l)))))
+  (loop [l l acc '()]
+    (cond
+      (null? l)
+      (reverse acc)
+      :else
+      (recur (cdr l)
+             (cons (car (car l)) acc)))))
 
 (defn insertR
   "Takes a new element and inserts it to the right of the old in the list"
@@ -24,6 +50,18 @@
     (null? l) '()
     (eq? (car l) old) (cons old (cons new (cdr l)))
     :else (cons (car l) (insertR new old (cdr l)))))
+
+; (defn insertR
+;   "Takes a new element and inserts it to the right of the old in the list"
+;   [new old l]
+;   (loop [l l acc '()]
+;     (cond
+;       (null? l)
+;       (reverse acc)
+;       (eq? (car l) old)
+;       (reverse (cons old (cons new acc)))
+;       :else
+;       (recur (cdr l) (cons (car l) acc)))))
 
 (defn insertL
   "Takes a new element and inserts it to the left of the old one"
