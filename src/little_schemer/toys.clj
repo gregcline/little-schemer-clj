@@ -26,8 +26,7 @@
 (defn atom?
   [item]
   (not (or (seq? item)
-           (null? item)
-           (number? item))))
+           (null? item))))
 
 (defn eq?
   [atom1 atom2]
