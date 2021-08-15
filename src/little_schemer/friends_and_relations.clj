@@ -22,11 +22,11 @@
   [set1 set2]
   (cond
     (null? set1) true
-    (and
-      (member? (car set1) set2)
-      (subset? (cdr set1) set2))))
+    :else (and
+            (member? (car set1) set2)
+            (subset? (cdr set1) set2))))
 
 (defn eqset?
   [set1 set2]
-  (and (subset set1 set2)
-       (subset set2 set1)))
+  (and (subset? set1 set2)
+       (subset? set2 set1)))
