@@ -44,99 +44,103 @@
              (cons (car (car l)) acc)))))
 
 (defn insertR
-  "Takes a new element and inserts it to the right of the old in the list"
-  [new old l]
+  [new old lat]
   (cond
-    (null? l) '()
-    (eq? (car l) old) (cons old (cons new (cdr l)))
-    :else (cons (car l) (insertR new old (cdr l)))))
+    (null? lat)
+    '()
 
-; (defn insertR
-;   "Takes a new element and inserts it to the right of the old in the list"
-;   [new old l]
-;   (loop [l l acc '()]
-;     (cond
-;       (null? l)
-;       (reverse acc)
-;       (eq? (car l) old)
-;       (reverse (cons old (cons new acc)))
-;       :else
-;       (recur (cdr l) (cons (car l) acc)))))
+    (eq? (car lat) old)
+    (cons old (cons new (cdr lat)))
+
+    :else
+    (cons (car lat)
+          (insertR new old (cdr lat)))))
 
 (defn insertL
-  "Takes a new element and inserts it to the left of the old one"
-  [new old l]
+  [new old lat]
   (cond
-    (null? l) '()
-    (eq? (car l) old) (cons new l)
-    :else (cons (car l) (insertL new old (cdr l)))))
+    (null? lat)
+    '()
+
+    (eq? (car lat) old)
+    (cons new lat)
+
+    :else
+    (cons (car lat)
+          (insertL new old (cdr lat)))))
 
 (defn subst
-  "Takes a new element and replaces the old element with the new"
-  [new old l]
+  [new old lat]
   (cond
-    (null? l) '()
-    (eq? (car l) old) (cons new (cdr l))
-    :else (cons (car l) (subst new old (cdr l)))))
+    (null? lat)
+    '()
+
+    (eq? (car lat) old)
+    (cons new (cdr lat))
+
+    :else
+    (cons (car lat)
+          (subst new old (cdr lat)))))
 
 (defn subst2
-  "Takes a new element and two old elements, replacing the first old it finds with new"
-  [new o1 o2 l]
+  [new o1 o2 lat]
   (cond
-    (null? l)
+    (null? lat)
     '()
-    (or (eq? (car l) o1)
-        (eq? (car l) o2))
-    (cons new (cdr l))
+
+    (or
+      (eq? (car lat) o1)
+      (eq? (car lat) o2))
+    (cons new (cdr lat))
+
     :else
-    (cons (car l) (subst2 new o1 o2 (cdr l)))))
+    (cons (car lat)
+          (subst2 new o1 o2 (cdr lat)))))
 
 (defn multirember
-  "Removes all instances of the atom from the list"
-  [atom l]
+  [a lat]
   (cond
-    (null? l) '()
-    (eq? (car l) atom) (multirember atom (cdr l))
-    :else (cons (car l) (multirember atom (cdr l)))))
+    (null? lat)
+    '()
+
+    (eq? (car lat) a)
+    (multirember a (cdr lat))
+
+    :else
+    (cons (car lat) (multirember a (cdr lat)))))
 
 (defn multiinsertR
-  "Adds new to the right of each instance of old"
-  [new old l]
+  [new old lat]
   (cond
-    (null? l)
+    (null? lat)
     '()
-    (eq? (car l) old)
-    (cons old
-      (cons new
-        (multiinsertR new old (cdr l))))
+
+    (eq? (car lat) old)
+    (cons old (cons new (multiinsertR new old (cdr lat))))
+
     :else
-    (cons (car l)
-      (multiinsertR new old (cdr l)))))
+    (cons (car lat) (multiinsertR new old (cdr lat)))))
 
 (defn multiinsertL
-  "Inserts new to the left of each instance of old"
-  [new old l]
+  [new old lat]
   (cond
-    (null? l)
+    (null? lat)
     '()
-    (eq? (car l) old)
-    (cons new
-      (cons old
-        (multiinsertL new old
-          (cdr l))))
+
+    (eq? (car lat) old)
+    (cons new (cons old (multiinsertL new old (cdr lat))))
+
     :else
-    (cons (car l)
-      (multiinsertL new old (cdr l)))))
+    (cons (car lat) (multiinsertL new old (cdr lat)))))
 
 (defn multisubst
-  "Substitutes all instances of old with new"
-  [new old l]
+  [new old lat]
   (cond
-    (null? l)
+    (null? lat)
     '()
-    (eq? (car l) old)
-    (cons new
-      (multisubst new old (cdr l)))
+
+    (eq? (car lat) old)
+    (cons new (multisubst new old (cdr lat)))
+
     :else
-    (cons (car l)
-      (multisubst new old (cdr l)))))
+    (cons (car lat) (multisubst new old (cdr lat)))))

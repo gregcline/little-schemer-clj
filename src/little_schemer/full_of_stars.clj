@@ -1,5 +1,6 @@
 (ns little-schemer.full-of-stars
-  (:require [little-schemer.toys :refer :all]))
+  (:require [little-schemer.toys :refer :all]
+            [little-schemer.numbers :refer :all]))
 
 (defn rember*
   "Removes `a` from all levels of `l` recursively"
@@ -69,6 +70,8 @@
       (atom? (car l)) (car l)
       :else (recur (car l)))))
 
+(declare equal?)
+
 (defn eqlist?
   "Tests whether two lists are equal recursively"
   [l1 l2]
@@ -77,11 +80,21 @@
       (and (null? l1) (null? l2))
       'true
 
-      (and (atom? (car l1)) (atom? (car l2)) (= (car l1) (car l2)))
-      (recur (cdr l1) (cdr l2))
-
-      (and (seq? (car l1)) (seq? (car l2)))
-      (eqlist? (car l1) (car l2))
+      (or (null? l1) (null? l2))
+      false
 
       :else
-      'false)))
+      (and (equal? (car l1) (car l2))
+           (eqlist? (cdr l1) (cdr l2))))))
+
+(defn equal?
+  "Tests whether two S-expressions are equal"
+  [s1 s2]
+  (cond
+    (and (atom? s1) (atom? s2))
+    (eqan? s1 s2)
+
+    (or (atom? s1) (atom? s2))
+    false
+
+    :else (eqlist? s1 s2)))

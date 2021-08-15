@@ -77,3 +77,10 @@
   (testing "elist? tests whether two lists are equal recursively"
     (is-true (eqlist? '(a ((b) c) d) '(a ((b) c) d)))
     (is-false (eqlist? '(a ((b) c) d) '(a ((c) c) d)))))
+
+(deftest equal?-test
+  (is-true (equal? 'a 'a))
+  (is-true (equal? '(a (b c)) '(a (b c))))
+  (is-false (equal? 'a 'b))
+  (is-false (equal? 'a '(a)))
+  (is-false (equal? '(a) '(b))))
